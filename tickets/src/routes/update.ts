@@ -31,6 +31,12 @@ router.put(
       userId: req.currentUser!.id
     })
     await ticket.save()
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      title:ticket.title,
+      price:ticket.price,
+      id:ticket.id,
+      userId: ticket.id
+    })
     res.send(ticket);
   }
 );
